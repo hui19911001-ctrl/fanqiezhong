@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Remix: 番茄鐘專注工具",
+  "description": "「我希望這個番茄鐘在更換瀏覽器或裝置時也能找回資料。請幫我同時加入這兩個功能：\n\n提供手動『匯出資料(JSON)』與『匯入資料』的按鈕，方便我離線備份。\n\n在畫面上方加上『連接 Firebase 雲端同步』的設定說明或按鈕，引導我完成雲端同步設定，讓資料真正跨裝置。」",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

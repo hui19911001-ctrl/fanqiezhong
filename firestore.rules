@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Core Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    // --- Entity Specific Validation Blueprints ---
+    function isValidTask(data) {
+      return data.keys().hasAll(['id', 'title', 'completed', 'estimatedPoms', 'completedPoms', 'createdAt'])
+        && data.keys().size() == 6
+        && data.id is string && data.id.size() <= 128
+        && data.title is string && data.title.size() <= 300
+        && data.completed is bool
+        && data.estimatedPoms is int && data.estimatedPoms >= 1 && data.estimatedPoms <= 10
+        && data.completedPoms is int && data.completedPoms >= 0 && data.completedPoms <= 100
+        && data.createdAt is int;
+    }
+
+    function isValidPomodoroSettings(data) {
+      return data.keys().hasAll(['focusTime', 'breakTime', 'autoStartNext', 'soundVolume'])
+        && data.keys().size() == 4
+        && data.focusTime is int && data.focusTime >= 1 && data.focusTime <= 180
+        && data.breakTime is int && data.breakTime >= 1 && data.breakTime <= 60
+        && data.autoStartNext is bool
+        && (data.soundVolume is int || data.soundVolume is float || data.soundVolume is number) 
+        && data.soundVolume >= 0.0 && data.soundVolume <= 1.0;
+    }
+
+    function isValidDailyStats(data) {
+      return data.keys().hasAll(['completedCount', 'totalFocusMinutes', 'lastUpdated'])
+        && data.keys().size() == 3
+        && data.completedCount is int && data.completedCount >= 0
+        && data.totalFocusMinutes is int && data.totalFocusMinutes >= 0
+        && data.lastUpdated is string && data.lastUpdated.size() <= 15;
+    }
+
+    // --- Match Rules for Firestore Paths ---
+    match /users/{userId} {
+      // Allow read/write for own user root doc if needed
+      allow read, write: if isOwner(userId);
+
+      // Tasks Subcollection
+      match /tasks/{taskId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(taskId) && isValidTask(incoming());
+        allow delete: if isOwner(userId);
+      }
+
+      // Configuration Subcollection
+      match /config/{configId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(configId) && (
+          (configId == 'settings' && isValidPomodoroSettings(incoming())) ||
+          (configId == 'stats' && isValidDailyStats(incoming()))
+        );
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "Task": {
+      "title": "Task",
+      "description": "A single focus task in the Todo list.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique ID of the task."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the task is completed."
+        },
+        "estimatedPoms": {
+          "type": "integer",
+          "description": "Estimated pomodoros count (1-10)."
+        },
+        "completedPoms": {
+          "type": "integer",
+          "description": "Completed pomodoros count."
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "Creation epoch timestamp."
+        }
+      },
+      "required": ["id", "title", "completed", "estimatedPoms", "completedPoms", "createdAt"]
+    },
+    "PomodoroSettings": {
+      "title": "PomodoroSettings",
+      "description": "User preferences and timer options.",
+      "type": "object",
+      "properties": {
+        "focusTime": {
+          "type": "integer",
+          "description": "Minutes for focus session."
+        },
+        "breakTime": {
+          "type": "integer",
+          "description": "Minutes for break session."
+        },
+        "autoStartNext": {
+          "type": "boolean",
+          "description": "Whether next timer starts automatically."
+        },
+        "soundVolume": {
+          "type": "number",
+          "description": "Auditory tick/click sound volume (0 to 1)."
+        }
+      },
+      "required": ["focusTime", "breakTime", "autoStartNext", "soundVolume"]
+    },
+    "DailyStats": {
+      "title": "DailyStats",
+      "description": "Accumulated statistics for the day.",
+      "type": "object",
+      "properties": {
+        "completedCount": {
+          "type": "integer",
+          "description": "Number of successfully completed tomatoes focus segments."
+        },
+        "totalFocusMinutes": {
+          "type": "integer",
+          "description": "Cumulative total focus minutes count."
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Date YYYY-MM-DD representation."
+        }
+      },
+      "required": ["completedCount", "totalFocusMinutes", "lastUpdated"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Collection of tasks for a registered user."
+    },
+    "/users/{userId}/config/settings": {
+      "schema": "PomodoroSettings",
+      "description": "User's Pomodoro configuration settings."
+    },
+    "/users/{userId}/config/stats": {
+      "schema": "DailyStats",
+      "description": "Today's pomodoro statistics."
+    }
+  }
+}

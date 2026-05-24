@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-morandi-sage: #8FA89B;
+  --color-morandi-sage-hover: #7C9689;
+  --color-morandi-sage-light: #EBF1EE;
+  
+  --color-morandi-rose: #C3A39A;
+  --color-morandi-rose-hover: #B49288;
+  --color-morandi-rose-light: #F8F3EF;
+  
+  --color-morandi-slate: #5A6D60;
+  --color-morandi-slate-light: #F0F4F2;
+  
+  --color-morandi-sand: #DDD8D3;
+  --color-morandi-sand-light: #F6F4F0;
+  
+  --color-morandi-cream: #FAF9F5;
+  --color-morandi-charcoal: #3D423F;
+  --color-morandi-terracotta: #A86756;
+}
+
+/* Custom fade effects and smooth transitions */
+.transition-all-custom {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modern minimalist custom ring classes */
+.ring-morandi {
+  outline: 2px solid var(--color-morandi-sage);
+  outline-offset: 2px;
+}
+
+/* Smooth custom checkbox and scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #DDD8D3;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C3A39A;
+}
+
+/* CSS Variable Theme System declaration */
+:root {
+  --theme-bg: #FAF9F5;
+  --theme-text: #3D423F;
+  --theme-border: #DDD8D3;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-hover: #F6F4F0;
+  --theme-accent: #8FA89B;
+  --theme-accent-hover: #7C9689;
+  --theme-accent-light: #EBF1EE;
+}
+
+[data-theme="dark"] {
+  --theme-bg: #0C0E0D;
+  --theme-text: #E5E8E6;
+  --theme-border: #2C322E;
+  --theme-card-bg: #151816;
+  --theme-card-hover: #222724;
+  --theme-accent: #A4BFB1;
+  --theme-accent-hover: #8FAD9D;
+  --theme-accent-light: #212925;
+}
+
+[data-theme="forest"] {
+  --theme-bg: #EAEFEA;
+  --theme-text: #2C3930;
+  --theme-border: #BCD0C3;
+  --theme-card-bg: #F9FCF9;
+  --theme-card-hover: #E4ECD7;
+  --theme-accent: #5E896E;
+  --theme-accent-hover: #4C725B;
+  --theme-accent-light: #DCEAE0;
+}
+
+[data-theme="sakura"] {
+  --theme-bg: #FAF2F2;
+  --theme-text: #533B3B;
+  --theme-border: #E8D3D3;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-hover: #FAEEED;
+  --theme-accent: #D29D97;
+  --theme-accent-hover: #C08D86;
+  --theme-accent-light: #FCEBEA;
+}
+
+[data-theme="ocean"] {
+  --theme-bg: #E7EDF0;
+  --theme-text: #23343C;
+  --theme-border: #C8D7DC;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-hover: #DEE9EC;
+  --theme-accent: #6194AF;
+  --theme-accent-hover: #4F819A;
+  --theme-accent-light: #DFEBF0;
+}
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Intelligent Card and Input overrides for theme integration */
+#pomodoro-timer-card,
+#local-storage-backup-panel,
+#todo-list-card,
+#today-stats-card,
+#white-noise-panel-card,
+#mindful-quote-board,
+#onboarding-modal-card {
+  background-color: var(--theme-card-bg) !important;
+  border-color: var(--theme-border) !important;
+  color: var(--theme-text) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+/* Secondary controls container or track */
+#mode-switch-container,
+#filter-tabs,
+#task-creation-form,
+.bg-morandi-sand-light,
+.bg-morandi-sand-light\/40,
+.bg-morandi-sand-light\/35 {
+  background-color: var(--theme-card-hover) !important;
+  border-color: var(--theme-border) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Ambient color bands or accents */
+.text-morandi-charcoal {
+  color: var(--theme-text) !important;
+}
+
+.text-morandi-charcoal\/50,
+.text-morandi-charcoal\/60,
+.text-morandi-charcoal\/70 {
+  color: var(--theme-text) !important;
+  opacity: 0.7;
+}
+
+.text-morandi-charcoal\/40,
+.text-morandi-charcoal\/30 {
+  color: var(--theme-text) !important;
+  opacity: 0.45;
+}
+
+/* Custom interactive inputs inside form lists */
+#new-task-title-input,
+#nickname-edit-input,
+#onboarding-name-input {
+  background-color: var(--theme-card-bg) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* White noise grid entries hover style override */
+[id^="sound-select-btn-"]:not(.bg-morandi-sage) {
+  background-color: var(--theme-card-hover) !important;
+  border-color: var(--theme-border) !important;
+  color: var(--theme-text) !important;
+}
+
